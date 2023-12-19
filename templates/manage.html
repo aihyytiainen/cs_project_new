@@ -1,0 +1,26 @@
+<title>Crappy Pollsite</title>
+<h1>Poll management</h1>
+
+{% include 'navbar.html' %}
+
+{% if session.username %}
+<hr>
+<h3>Your Polls:</h3>
+<hr>
+{% for poll in polls %}
+Topic: {{ poll.topic }} <br>
+Created at: {{ poll.created_at.strftime("%Y-%m-%d %H:%M:%S") }} <br>
+
+<form action="/poll/{{ poll.id }}">
+  <button type="submit">Vote</button>
+</form>
+<form action="/result/{{ poll.id }}">
+  <button type="submit">Show results</button>
+</form>
+<form action="/delete/{{ poll.id }}">
+  <button type="submit">Delete</button>
+</form>
+<hr>
+{% endfor %}
+{% endif %}
+<a href="/">Back</a>

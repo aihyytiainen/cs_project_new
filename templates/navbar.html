@@ -1,0 +1,21 @@
+{% if session.username %}
+<p>You're logged in as {{ session.username }}</p>
+<form action="/logout">
+  <button type="submit">Log out</button>
+</form>
+<form action="/new">
+  <button type="submit">Create a poll</button>
+</form>
+<form action="/manage">
+  <button type="submit">Manage your polls</button>
+</form>
+{% else %}
+
+<form action="/login">
+  <button type="submit">Login</button>
+</form>
+
+<form action="/sign_up">
+  <button type="submit">Sign up</button>
+</form>
+{% endif %}

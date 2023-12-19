@@ -1,0 +1,34 @@
+
+<title>Crappy Pollsite</title>
+<h1>Polls, polls, polls...</h1>
+
+{% include 'navbar.html' %}
+
+
+{% if session.username %}
+<hr>
+<h3>Active Polls:</h3>
+
+{% with messages = get_flashed_messages() %}
+  {% if messages %}
+    <ul class=flashes>
+    {% for message in messages %}
+      <strong>{{ message }}</strong>
+    {% endfor %}
+    </ul>
+  {% endif %}
+{% endwith %}
+
+<hr>
+{% for poll in polls %}
+Topic: {{ poll.topic }} <br>
+Created at: {{ poll.created_at.strftime("%Y-%m-%d %H:%M:%S") }} <br>
+<form action="/poll/{{ poll.id }}">
+  <button type="submit">Vote</button>
+</form>
+<form action="/result/{{ poll.id }}">
+  <button type="submit">Show results</button>
+</form>
+<hr>
+{% endfor %}
+{% endif %}
