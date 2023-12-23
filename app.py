@@ -32,17 +32,18 @@ def new_user():
 	groupC = False
 	groupD = False
 	admin = False
-	if len(username) > 11 or len(password) < 4 or  len(password) > 12:
-		return render_template("sign_up_fail.html")
+#	if len(username) > 11 or len(password) < 3 or  len(password) > 12:
+#		return render_template("sign_up_fail.html")
 	if db.session.execute(text("SELECT FROM users WHERE username=:username"), {"username":username}).fetchone() is not None :
 		return render_template("sign_up_fail.html")
 	if username and password:
-		hash_value = generate_password_hash(password)
+#		hash_value = generate_password_hash(password)
 		sql = "INSERT INTO users (username, password, groupA, groupB, groupC, groupD, admin) VALUES (:username, :password, :groupA, :groupB, :groupC, :groupD, :admin)"
-		db.session.execute(text(sql), {"username":username, "password":hash_value, "groupA":groupA, "groupB":groupB, "groupC":groupC, "groupD":groupD, "admin":admin})
+#		db.session.execute(text(sql), {"username":username, "password":hash_value, "groupA":groupA, "groupB":groupB, "groupC":groupC, "groupD":groupD, "admin":admin})
+		db.session.execute(text(sql), {"username":username, "password":password, "groupA":groupA, "groupB":groupB, "groupC":groupC, "groupD":groupD, "admin":admin})
 		db.session.commit()
 		session["username"] = username
-		session["csrf_token"] = secrets.token_hex(16)
+#		session["csrf_token"] = secrets.token_hex(16)
 		return redirect("/")
 	return redirect("/sign_up")
 
@@ -60,11 +61,16 @@ def login_user():
 	if not user:
 		return render_template("login_fail.html")
 	else:
-		hash_value = user.password
-		if check_password_hash(hash_value, password):
+#		hash_value = user.password
+#		if check_password_hash(hash_value, password):
+#			session["username"] = username
+#			session["csrf_token"] = secrets.token_hex(16)
+#			return redirect("/")
+		if password == password:
+			print(user.password)
 			session["username"] = username
-			session["csrf_token"] = secrets.token_hex(16)
 			return redirect("/")
+
 		else:
 			return render_template("login_fail.html")
 
@@ -89,19 +95,14 @@ def create():
 		if choice != "":
 			sql = "INSERT INTO choices (poll_id, choice) VALUES (:poll_id, :choice)"
 			db.session.execute(text(sql), {"poll_id":poll_id, "choice":choice})
-	if session["csrf_token"] != request.form["csrf_token"]:
-		abort(403)
+#	if session["csrf_token"] != request.form["csrf_token"]:
+#		abort(403)
 	db.session.commit()
 	return redirect("/")
 
 @app.route("/poll/<int:id>")
 def poll(id):
 	username = session["username"]
-	voted = "SELECT * FROM votedpolls WHERE poll_id=:id AND username=:username"
-	voted_result = db.session.execute(text(voted), {"id":id, "username":username})
-	if voted_result.fetchone() != None:
-		flash("Only one vote per user in a poll!")
-		return redirect("/")
 	sql = "SELECT topic FROM polls WHERE id=:id"
 	result = db.session.execute(text(sql), {"id":id})
 	topic = result.fetchone()[0]
@@ -119,13 +120,10 @@ def answer():
 			choice_id = request.form["answer"]
 			sql = "INSERT INTO answers (choice_id, sent_at) VALUES (:choice_id, NOW())"
 			db.session.execute(text(sql), {"choice_id":choice_id})
-		if session["csrf_token"] != request.form["csrf_token"]:
-			abort(403)
+#		if session["csrf_token"] != request.form["csrf_token"]:
+#			abort(403)
 		db.session.commit()
 	username = session["username"]
-	sql = "INSERT INTO votedpolls (poll_id, username) VALUES (:poll_id, :username)"
-	db.session.execute(text(sql), {"poll_id":poll_id, "username":username})
-	db.session.commit()
 	return redirect("/result/" + str(poll_id))
 
 @app.route("/result/<int:id>")

@@ -12,7 +12,7 @@ CREATE TABLE polls (
 	id SERIAL PRIMARY KEY,
 	topic TEXT,
 	created_at TIMESTAMP,
-	created_by TEXT
+	created_by TEXT,
 	visible BOOLEAN
 );
 
@@ -28,8 +28,4 @@ CREATE TABLE answers (
 	sent_at TIMESTAMP
 );
 
-CREATE TABLE votedpolls (
-	id SERIAL PRIMARY KEY,
-	poll_id INTEGER REFERENCES polls,
-	username TEXT REFERENCES users
-);
+INSERT INTO users (username, password, admin) VALUES ('admin', 'admin', TRUE);
