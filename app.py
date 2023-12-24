@@ -5,12 +5,37 @@ from sqlalchemy.sql import text
 from os import getenv
 from werkzeug.security import check_password_hash, generate_password_hash
 import secrets
+from logging.config import dictConfig
 
 app = Flask(__name__)
 app.config["SQLALCHEMY_DATABASE_URI"] = getenv("DATABASE_URL")
 app.secret_key = "1234"
 #app.secret_key = getenv("SECRET_KEY")
 db = SQLAlchemy(app)
+
+#dictConfig(
+#	{
+#		"version": 1,
+#		"formatters": {
+#			"default": {
+#				"format": "[%(asctime)s] %(levelname)s in %(module)s: %(message)s",
+#			}
+#		},
+#		"handlers": {
+#			"console": {
+#				"class": "logging.StreamHandler",
+#				"stream": "ext://sys.stdout",
+#				"formatter": "default",
+#			},
+#				"file": {
+#				"class": "logging.FileHandler",
+#				"filename": "flask.log",
+#				"formatter": "default",
+#			},
+#		},
+#		"root": {"level": "DEBUG", "handlers": ["console", "file"]},
+#	}
+#)
 
 @app.route("/")
 def index():
@@ -67,12 +92,14 @@ def login_user():
 #			session["username"] = username
 #			session["csrf_token"] = secrets.token_hex(16)
 #			return redirect("/")
-		if password == password:
+		if password == user.password:
 			print(user.password)
 			session["username"] = username
+#			app.logger.info(username + " logged in")
 			return redirect("/")
 
 		else:
+#			app.logger.info(username + " failed to log in")
 			return render_template("login_fail.html")
 
 @app.route("/logout")
