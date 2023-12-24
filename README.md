@@ -44,6 +44,7 @@ Installation (linux):
 ---------------
 
 FLAW 1 : Identification and Authentication Failures (OWASP Top Ten A07: 2021)
+
 The site accepts any username and password without any checks on their length. And also the admin user is preset to the database on schema.sql with a very non secure username and password: admin, admin. 
 Fixes: 
 Remove the preset admin user from schema.sql: https://github.com/aihyytiainen/cs_project_new/blob/36af497006615aedf7a8670cdcdde46a5582c7bc/schema.sql#L31
