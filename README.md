@@ -67,12 +67,16 @@ FLAW 2: Cryptographic Failures (OWASP Top Ten A02: 2021)
 The passwords of users are stored in the database as plain text without any encryption. This is a very insecure solution to store user information.
 
 Fixes:
-Use a hash value to encrypt the password before storing it to the database:
+Use a hash value to encrypt the password before storing it to the database (uncomment these):
 https://github.com/aihyytiainen/cs_project_new/blob/36af497006615aedf7a8670cdcdde46a5582c7bc/app.py#L66
 https://github.com/aihyytiainen/cs_project_new/blob/36af497006615aedf7a8670cdcdde46a5582c7bc/app.py#L68
+(comment this):
+https://github.com/aihyytiainen/cs_project_new/blob/1698553ff61a58242126f5b8db154e3ef8576a33/app.py#L69
 
-Also when logging in you have to decrypt the password and check the decrypted password to allow user log in:
+Also when logging in you have to decrypt the password and check the decrypted password to allow user log in (uncomment these):
 https://github.com/aihyytiainen/cs_project_new/blob/36af497006615aedf7a8670cdcdde46a5582c7bc/app.py#L90-L94
+(comment these):
+https://github.com/aihyytiainen/cs_project_new/blob/1698553ff61a58242126f5b8db154e3ef8576a33/app.py#L95-L99
 
 Any sensitive data including eg. passwords, credit card numbers, personal info or addresses should never be stored as plain text. All sensitive data should be encrypted before it is stored so in case there is a data breach to the database the attackers are not able to use the stolen data in nefarious ways because the stolen data is not usable without the encryption key.
 
@@ -104,11 +108,8 @@ Malicious users can exploit the site with attacks from multiple unknown sources 
 
 Fixes (uncomment these):
 https://github.com/aihyytiainen/cs_project_new/blob/36af497006615aedf7a8670cdcdde46a5582c7bc/app.py#L72
-
 https://github.com/aihyytiainen/cs_project_new/blob/36af497006615aedf7a8670cdcdde46a5582c7bc/app.py#L93
-
 https://github.com/aihyytiainen/cs_project_new/blob/36af497006615aedf7a8670cdcdde46a5582c7bc/app.py#L126-L127
-
 https://github.com/aihyytiainen/cs_project_new/blob/36af497006615aedf7a8670cdcdde46a5582c7bc/app.py#L151-L152
 
 
